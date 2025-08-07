@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAISA-SAMHAL - Smart Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-rupee-sign"></i> PAISA-SAMHAL</h1>
+                <p class="tagline">Smart Expense Tracker for Students</p>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="export-btn" id="exportBtn">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-month"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="monthlyTotal">$0.00</h3>
+                    <p>This Month</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-target"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="budgetRemaining">$0.00</h3>
+                    <p>Budget Left</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalExpenses">0</h3>
+                    <p>Total Entries</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Setting -->
+        <div class="budget-section">
+            <div class="budget-card">
+                <h3><i class="fas fa-piggy-bank"></i> Monthly Budget</h3>
+                <div class="budget-input">
+                    <input type="number" id="budgetInput" placeholder="Set your monthly budget" step="0.01">
+                    <button id="setBudgetBtn">Set Budget</button>
+                </div>
+                <div class="budget-progress" id="budgetProgress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="budget-info" id="budgetInfo"></div>
+            </div>
+        </div>
+
+        <!-- Add Expense Form -->
+        <div class="add-expense-section">
+            <div class="expense-form-card">
+                <h3><i class="fas fa-plus-circle"></i> Add New Expense</h3>
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="food">🍕 Food & Dining</option>
+                            <option value="transport">🚌 Transport</option>
+                            <option value="entertainment">🎬 Entertainment</option>
+                            <option value="stationery">📚 Stationery</option>
+                            <option value="rent">🏠 Rent & Bills</option>
+                            <option value="clothing">👕 Clothing</option>
+                            <option value="health">💊 Health & Medical</option>
+                            <option value="other">🔧 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <input type="text" id="description" placeholder="Brief description">
+                    </div>
+                    <button type="submit" class="add-btn">
+                        <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filters-card">
+                <h3><i class="fas fa-filter"></i> Filter & Search</h3>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="filterCategory">Category</label>
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="food">🍕 Food & Dining</option>
+                            <option value="transport">🚌 Transport</option>
+                            <option value="entertainment">🎬 Entertainment</option>
+                            <option value="stationery">📚 Stationery</option>
+                            <option value="rent">🏠 Rent & Bills</option>
+                            <option value="clothing">👕 Clothing</option>
+                            <option value="health">💊 Health & Medical</option>
+                            <option value="other">🔧 Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterStartDate">From Date</label>
+                        <input type="date" id="filterStartDate">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterEndDate">To Date</label>
+                        <input type="date" id="filterEndDate">
+                    </div>
+                    <button id="clearFilters" class="clear-btn">Clear Filters</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Expenses List -->
+        <div class="expenses-section">
+            <div class="expenses-card">
+                <h3><i class="fas fa-list"></i> Recent Expenses</h3>
+                <div class="expenses-list" id="expensesList">
+                    <!-- Expenses will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Warning Modal -->
+        <div class="modal" id="budgetWarningModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>Budget Alert!</h2>
+                <p id="warningMessage"></p>
+                <button class="modal-btn" onclick="closeBudgetWarning()">Got it!</button>
+            </div>
+        </div>
+
+        <!-- Edit Expense Modal -->
+        <div class="modal" id="editExpenseModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2><i class="fas fa-edit"></i> Edit Expense</h2>
+                <form id="editExpenseForm">
+                    <div class="form-group">
+                        <label for="editAmount">Amount (₹)</label>
+                        <input type="number" id="editAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Category</label>
+                        <select id="editCategory" required>
+                            <option value="food">🍕 Food & Dining</option>
+                            <option value="transport">🚌 Transport</option>
+                            <option value="entertainment">🎬 Entertainment</option>
+                            <option value="stationery">📚 Stationery</option>
+                            <option value="rent">🏠 Rent & Bills</option>
+                            <option value="clothing">👕 Clothing</option>
+                            <option value="health">💊 Health & Medical</option>
+                            <option value="other">🔧 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDate">Date</label>
+                        <input type="date" id="editDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Description</label>
+                        <input type="text" id="editDescription">
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="save-btn">Save Changes</button>
+                        <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
